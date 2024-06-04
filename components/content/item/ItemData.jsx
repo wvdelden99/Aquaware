@@ -1,10 +1,43 @@
-import { Text, View } from 'react-native';
+import {Button, Pressable, Text, TextInput, View} from 'react-native';
+import {useState} from "react";
+import * as Progress from 'react-native-progress';
 
 
 export function ItemData() {
+
+    const [consumed,setConsumed] = useState(0)
+    const [inputValue, setInputValue] = useState('')
+
+    const variableCounter = () => (
+        parseInt(inputValue, 10) || 0
+    )
+    const increase = () => (
+        setConsumed(consumed + (variableCounter()))
+    )
+    // const inputHandler = (number) => {
+    //     return (
+    //         setConsumed(consumed + 1)
+    //     )
+    // }
+
+    const reset = () => {
+        return (
+            setConsumed(0)
+        )
+    }
+
     return (
         <View className="rounded-md w-full bg-gray-300">
-            <Text>Test</Text>
+
+            <Progress.Bar style={{transform:[{rotate: '270deg'}], alignSelf: 'center', borderRadius: 10}} progress={consumed /1500} width={250} height={300}/>
+
+                <Text className='self-center font-bold text-lg'>{consumed} / 1500</Text>
+
+                    <TextInput onChangeText={setInputValue} className='border-2 h-12 w-24 self-center rounded-2xl'/>
+
+                    <Button title={'Submit data'} onPress={increase} />
+                    <Button title={'Reset'} onPress={reset} />
+
         </View>
     )
 }
