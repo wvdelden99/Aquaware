@@ -1,26 +1,21 @@
-import {Button, Pressable, Text, TextInput, View} from 'react-native';
+import {Button, Text, TextInput, View} from 'react-native';
 import {useState} from "react";
 import * as Progress from 'react-native-progress';
 
 
 export function ItemData() {
 
-    const [consumed,setConsumed] = useState(0)
-    const [inputValue, setInputValue] = useState('')
+    const [consumed,setConsumed] = useState(0)      // Consumed state handler
+    const [inputValue, setInputValue] = useState('') // Input state handler
 
     const variableCounter = () => (
-        parseInt(inputValue, 10) || 0
-    )
+        parseInt(inputValue, 10) || 0                       // Variable uses value from input
+    )                                                       // Will parse strings into an integer and default to 0
     const increase = () => (
-        setConsumed(consumed + (variableCounter()))
-    )
-    // const inputHandler = (number) => {
-    //     return (
-    //         setConsumed(consumed + 1)
-    //     )
-    // }
+        setConsumed(consumed + (variableCounter()))         // Will change the Consumed state value
+    )                                                       // By incrementing it with the value of variableCounter
 
-    const reset = () => {
+    const reset = () => {                             // Will reset the Consumed state to 0
         return (
             setConsumed(0)
         )
@@ -37,7 +32,6 @@ export function ItemData() {
 
                     <Button title={'Submit data'} onPress={increase} />
                     <Button title={'Reset'} onPress={reset} />
-
         </View>
     )
 }
