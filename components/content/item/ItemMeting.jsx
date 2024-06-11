@@ -25,18 +25,15 @@ export function ItemMeting({textDrink, timeFirst, timeLast, moistureFirst, moist
     return (
         <>
         <TouchableOpacity onPress={openModalData}>
-            <View className="my-2">
-                <View className="flex-row justify-between items-center rounded-t-md p-2 bg-gray-400">
-                    <View className="flex-row items-center gap-1 ">
-                        <Image className="w-4 h-4" source={require('./../../../assets/static/icons/icon_drink_01.png')}/>
-                        <Text className="text-sm font-semibold text-white">{textDrink}</Text>
+            <View className="my-2 rounded bg-white">
+                <View className="p-3">
+                    <View className="self-start rounded-md py-1 px-6 bg-primary">
+                        <Text className="text-sm font-medium text-white">{textDrink}</Text>
                     </View>
-
-                    <Text className="text-sm font-semibold text-white">U heeft {moistureTotal} ml {textDrink} ingenomen</Text>
                 </View>
 
-                <View className="flex-row justify-between rounded-b-md p-3 bg-white">
-                    <View className="flex-row justify-between  w-1/2">
+                <View className="flex-row justify-between md p-3">
+                    <View className="flex-row justify-between w-1/2">
                         <View className="">
                             <Text className="text-sm font-semibold">Meting 1</Text>
                             <Text className="text-sm font-regular">{timeFirst}</Text>
@@ -137,6 +134,10 @@ export function ItemMeting({textDrink, timeFirst, timeLast, moistureFirst, moist
                                 )}
                             </View>
                         </View>
+                    </View>
+
+                    <View>
+                        
                     </View>
                 </View>
             </View>

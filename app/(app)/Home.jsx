@@ -10,12 +10,15 @@ export function Home() {
         <LayoutBasic>
             <ItemData />
 
-            <View className="my-2 rounded-md bg-gray-300">
-                <View className="items-center rounded-t-md p-2 bg-gray-400">
-                    <Text className="text-base font-semibold text-white">Recente vochtinname</Text>
+            <View className="my-2 p-3 rounded-md bg-primary">
+                <View className="">
+                    <Text className="text-base font-semibold text-white">Recente vochtinnames</Text>
+                    <View className="mt-3">
+                        <Image className="" source={require('./../../assets/static/figure/figure_blocks_01.png')}/>
+                    </View>
                 </View>
 
-                <View className="p-3">
+                <View className="">
                     <ItemMeting textDrink="Cola"
                                 timeFirst="17:15"
                                 timeLast="17:37"
