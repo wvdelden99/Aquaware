@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Image, Modal, Text, TextInput, TouchableOpacity, View } from 'react-native';
+import { color, opacity } from '../../../assets/styles/Styles';
 
 
 export function ItemMeting({textDrink, timeFirst, timeLast, moistureFirst, moistureLast}) {
@@ -24,7 +25,7 @@ export function ItemMeting({textDrink, timeFirst, timeLast, moistureFirst, moist
 
     return (
         <>
-        <TouchableOpacity onPress={openModalData}>
+        <TouchableOpacity onPress={openModalData} activeOpacity={opacity.opacity800}>
             <View className="my-2 rounded bg-white">
                 <View className="p-3">
                     <View className="self-start rounded-md py-1 px-6 bg-primary">
@@ -32,112 +33,95 @@ export function ItemMeting({textDrink, timeFirst, timeLast, moistureFirst, moist
                     </View>
                 </View>
 
-                <View className="flex-row justify-between md p-3">
-                    <View className="flex-row justify-between w-1/2">
-                        <View className="">
-                            <Text className="text-sm font-semibold">Meting 1</Text>
-                            <Text className="text-sm font-regular">{timeFirst}</Text>
+                <View className="flex-row justify-evenly border-t-2 border-gray-light mx-3 py-3">
+                    <View className="border-r-2 border-gray-light pr-3 w-1/2">
+                        <View className="flex-row justify-between items-center">
+                            <Text className="text-sm font-semibold text-primary">Meting 1</Text>
+                            <Text className="text-sm font-medium text-gray-400">{timeFirst}</Text>
                         </View>
-
-                        <View className="justify-center mx-auto">
-                            <View className="rounded-md p-1 bg-gray-200">
-                                <Text className="text-sm font-medium">{moistureFirst} ml</Text>
-                            </View>
+                        <View className="self-start my-1 border-2 border-gray-light rounded-md py-1 px-4">
+                            <Text className="text-sm text-center text-primary">{moistureFirst} ml</Text>
                         </View>
                     </View>
 
-                    <View className="flex-row justify-between border-l-[1px] border-black w-1/2">
-                        <View className="mx-auto">
-                            <Text className="text-sm font-semibold">Meting 2</Text>
-                            <Text className="text-sm font-regular">{timeLast}</Text>
+                    <View className="pl-3 w-1/2">
+                        <View className="flex-row justify-between items-center">
+                            <Text className="text-sm font-semibold text-primary">Meting 1</Text>
+                            <Text className="text-sm font-medium text-gray-400">{timeLast}</Text>
                         </View>
-
-                        <View className="justify-center">
-                            <View className="rounded-md p-1 bg-gray-200">
-                                <Text className="text-sm font-medium">{moistureLast} ml</Text>
-                            </View>
+                        <View className="self-start my-1 border-2 border-gray-light rounded-md py-1 px-4">
+                            <Text className="text-sm text-center text-primary">{moistureLast} ml</Text>
                         </View>
                     </View>
+                </View>
+
+                <View className="pb-3 px-3">
+                    <View className="rounded-full w-full h-3 bg-secondary"></View>
                 </View>
             </View>
         </TouchableOpacity>
 
         <Modal visible={showModalData}
-                transparent={true}>
-            <View className="flex-[1] justify-center px-6">
-                <View className="items-center rounded-t-md p-2 bg-gray-400">
-                    <Text className="text-base font-semibold text-white">Specificatie van Meting</Text>
-                </View>
+                transparent={true}
+                animationType='fade'>
+            <View className="absolute w-full h-full bg-black opacity-50"></View>
+            <View className="flex-[1] justify-center px-4">
+                <View className="rounded-md p-3 bg-white">
+                    <View className="">
+                        <Text className="text-base font-bold text-primary">Specificatie van Meting</Text>
+                        <View className="mt-3 mb-1">
+                            <Image className="" style={{ tintColor: color.secondaryColor }} source={require('./../../../assets/static/figure/figure_blocks_01.png')}/>
+                        </View>
+                    </View>
 
-                <View className="rounded-b-md p-4 bg-white">
-                    <View className="flex-row justify-evenly">
-                        <View className="mr-2 w-1/2">
-                            <View className="rounded-t-md p-2 bg-gray-400">
-                                <Text className="text-sm text-center font-semibold text-white">Meting 1</Text>
-                            </View>
-
-                            <View className="flex-row justify-between items-center rounded-b-md p-4 bg-gray-200">
-                                {showEditData ? (
-                                    <View className="w-full">
-                                        <TouchableOpacity onPress={editData}>
-                                            <View className="rounded-md p-2 bg-gray-800">
-                                                <TextInput classsName="text-xs font-medium text-white" 
-                                                            placeholder="Voer Meting Uit"
-                                                            placeholderTextColor="#FFF"/>
-                                            </View>
-                                        </TouchableOpacity>
+                    <View className="flex-row justify-evenly my-3">
+                        <View className="w-1/2 pr-2">
+                            <View className="border-2 border-gray-light rounded">
+                                <View className="rounded-t py-2 bg-primary">
+                                    <Text className="text-sm text-center font-semibold text-white">Meting 1</Text>
+                                </View>
+                                <View className="my-3">
+                                    <View className="flex-row justify-evenly items-center">
+                                        <Text className="text-sm font-medium text-gray-400">{timeFirst}</Text>
+                                        <TextInput className="border-2 border-gray-light rounded-md py-1 px-4 text-primary"
+                                                    value={moistureFirst}/>
                                     </View>
-                                ) : (
-                                    <>
-                                    <View className="">
-                                        <Text className="text-sm font-regular">{timeFirst}</Text>
+                                    <View className="pt-3 px-2">
+                                        <Text className="text-[13px] font-semibold text-gray-400">Pas indien nodig aan.</Text>
                                     </View>
-
-                                    <TouchableOpacity onPress={editData}>
-                                        <View className="flex-row rounded-md py-1 px-2 bg-white">
-                                            <Text className="text-sm text-dark">{moistureFirst} ml</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                    </>
-                                )}
+                                </View>
                             </View>
                         </View>
-
-                        <View className="ml-2 w-1/2">
-                            <View className="rounded-t-md p-2 bg-gray-400">
-                                <Text className="text-sm text-center font-semibold text-white">Meting 1</Text>
-                            </View>
-
-                            <View className="flex-row justify-between items-center rounded-b-md p-4 bg-gray-200">
-                                {showEditData ? (
-                                    <View className="w-full">
-                                        <TouchableOpacity onPress={editData}>
-                                            <View className="rounded-md p-2 bg-gray-800">
-                                                <TextInput classsName="text-xs font-medium text-white" 
-                                                            placeholder="Voer Meting Uit"
-                                                            placeholderTextColor="#FFF"/>
-                                            </View>
-                                        </TouchableOpacity>
+   
+                        <View className="w-1/2 pl-2">
+                            <View className="border-2 border-gray-light rounded">
+                                <View className="rounded-t py-2 bg-primary">
+                                    <Text className="text-sm text-center font-semibold text-white">Meting 2</Text>
+                                </View>
+                                <View className="my-3">
+                                    <View className="flex-row justify-evenly items-center">
+                                        <Text className="text-sm font-medium text-gray-400">{timeLast}</Text>
+                                        <TextInput className="border-2 border-gray-light rounded-md py-1 px-4 text-primary"
+                                                    value={moistureLast}/>
                                     </View>
-                                ) : (
-                                    <>
-                                    <View className="">
-                                        <Text className="text-sm font-regular">{timeLast}</Text>
+                                    <View className="pt-3 px-2">
+                                        <Text className="text-[13px] font-semibold text-gray-400">Pas indien nodig aan.</Text>
                                     </View>
-
-                                    <TouchableOpacity onPress={editData}>
-                                        <View className="flex-row rounded-md py-1 px-2 bg-white">
-                                            <Text className="text-sm text-dark">{moistureLast} ml</Text>
-                                        </View>
-                                    </TouchableOpacity>
-                                    </>
-                                )}
+                                </View>
                             </View>
                         </View>
                     </View>
 
-                    <View>
-                        
+                    <View className="my-2 rounded bg-secondary-light p-3">
+                        <Text className="mb-1 text-sm font-semibold text-primary">Let op!</Text>
+                        <Text className="text-sm text-primary">Er dient nog een tweede meting toegevoegd te worden voor {textDrink}.</Text>
+                    </View>
+
+                    <View className="items-center mt-3 mb-2">
+                        <TouchableOpacity onPress={closeModalData} activeOpacity={opacity.opacity800}>
+                            <Text className="text-sm text-center font-medium text-primary">Sluit dit scherm</Text>
+                            <View className="border-t-[1px] border-primary"></View>
+                        </TouchableOpacity>
                     </View>
                 </View>
             </View>
