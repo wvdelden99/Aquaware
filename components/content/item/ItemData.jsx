@@ -4,25 +4,23 @@ import * as Progress from 'react-native-progress';
 
 
 export function ItemData() {
-    const [consumed,setConsumed] = useState(0)      // Consumed state handler
-    const [inputValue, setInputValue] = useState('') // Input state handler
+    const [consumed,setConsumed] = useState(0)
+    const [inputValue, setInputValue] = useState('')
 
     const variableCounter = () => (
-        parseInt(inputValue, 10) || 0                   // Variable uses value from input
+        parseInt(inputValue, 10) || 0
     )
-    // Will parse strings into an integer and default to 0
     const increase = () => (
         (
             setConsumed(consumed + (variableCounter())
             )
         )
     )
-    // Will change the Consumed state value
-    // By incrementing it with the value of variableCounter
+
 
     const reset = () => (
         setConsumed(0)
-    )                                                   // Will reset the Consumed state to 0
+    )
 
 
     return (

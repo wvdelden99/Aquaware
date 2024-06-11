@@ -21,8 +21,7 @@ export function Home() {
             )
         )
     )
-    // Will change the Consumed state value
-    // By incrementing it with the value of variableCounter
+
 
     const reset = () => (
         setConsumed(0)
