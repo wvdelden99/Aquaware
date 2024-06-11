@@ -1,7 +1,6 @@
 import {Button, Text, TextInput, View} from 'react-native';
 import {useState} from "react";
 import * as Progress from 'react-native-progress';
-import {ItemMeting} from "./ItemMeting";
 
 
 export function ItemData() {
