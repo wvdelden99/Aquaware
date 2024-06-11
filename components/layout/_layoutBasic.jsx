@@ -1,4 +1,4 @@
-import { SafeAreaView, StatusBar, Text, View } from 'react-native';
+import { SafeAreaView, ScrollView, StatusBar, Text, View } from 'react-native';
 
 
 export function LayoutBasic({children}) {
@@ -11,9 +11,9 @@ export function LayoutBasic({children}) {
                 <Text className="text-lg font-bold text-white">MIJN VOCHTBALANS</Text>
             </View>
 
-            <View className="mt-6 px-6">
+            <ScrollView className="mt-6 px-6">
                 {children}
-            </View>
+            </ScrollView>
         </SafeAreaView>
     )
 }
