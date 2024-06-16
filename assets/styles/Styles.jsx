@@ -1,6 +1,10 @@
 export const color = {
     whiteColor: "#FFFFFF",
-    secondaryColor: "#008080"
+    grayColor: "#777777",
+    primaryColor: "#0C2074",
+    secondaryColor: "#008080",
+    secondaryLightColor: "#86D2ED",
+    secondaryLightAltColor: "#D7F0F9"
 };
 
 export const opacity = {

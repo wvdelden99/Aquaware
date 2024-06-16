@@ -1,139 +1,158 @@
-import {Button, Image, Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 // Components
-import { LayoutBasic } from '../../components/layout/_layoutBasic';
-import { ItemMeting } from '../../components/content/item/ItemMeting';
-import { color } from '../../assets/styles/Styles';
-import {useState} from "react";
-import * as Progress from 'react-native-progress';
+import { LayoutBasic } from './../../components/layout/_layoutBasic';
+import { ItemTotal } from '../../components/content/item/ItemTotal';
+import { ItemData } from '../../components/content/item/ItemData';
+import { useState } from 'react';
+import { color, opacity } from '../../assets/styles/Styles';
+
 
 export function Home() {
-    const [consumed,setConsumed] = useState(0)      // Consumed state handler
-    const [inputValue, setInputValue] = useState('') // Input state handler
 
-    const variableCounter = () => (
-        parseInt(inputValue, 10) || 0                   // Variable uses value from input
-    )
-    // Will parse strings into an integer and default to 0
-    const increase = () => (
-        (
-            setConsumed(consumed + (variableCounter())
-            )
-        )
-    )
-    // Will change the Consumed state value
-    // By incrementing it with the value of variableCounter
+    // Moisture Data
+    const moisture = [
+        {
+            id: 1,
+            dataProduct: "Cola",
+            dataDrink: true,
+            timeFirst: "17:12",
+            timeLast: "17:20",
+            moistureFirst: 225,
+            moistureLast: 75,
+        },
+        {
+            id: 2,
+            dataProduct: "Boerenkool",
+            dataDrink: false,
+            timeFirst: "13:12",
+            timeLast: "13:58",
+            moistureFirst: 75,
+            moistureLast: null
+        },
+        {
+            id: 3,
+            dataProduct: "Water",
+            dataDrink: true,
+            timeFirst: "13:12",
+            timeLast: "13:58",
+            moistureFirst: 175,
+            moistureLast: null
+        },
+        {
+            id: 4,
+            dataProduct: "Thee",
+            dataDrink: true,
+            timeFirst: "13:12",
+            timeLast: "13:58",
+            moistureFirst: 225,
+            moistureLast: 75
+        }
+    ];
 
-    const reset = () => (
-        setConsumed(0)
-    )                                                   // Will reset the Consumed state to 0
+    // Moisture Max
+    const moistureMax = 1500;
+
+    // Moisture Total
+    const moistureTotal = moisture.reduce((total, item) => {
+        if (item.moistureLast != null) {
+            return total + (item.moistureFirst - item.moistureLast);
+        }
+        return total;
+    }, 0);
+
+    // Recommendations
+    const drinkRecommendation = [{ name: "Water" }, { name: "Appelsap" }, { name: "Thee" }, { name: "Koffie" }];
+    const foodRecommendation = [{ name: "Banaan" }, { name: "Boterham met ham en kaas" }, { name: "Erwtensoep" }];
 
     return (
-        <LayoutBasic>
-            <View className="rounded-md w-full bg-gray-300">
-                <Progress.Bar className={'-rotate-90'} style={{alignSelf: 'center', borderRadius: 10}}
-                              progress={consumed / 1500} width={250} height={300}/>
+        <LayoutBasic headerText="MIJN VOCHTINNAME">
+            <ItemTotal moistureTotal={moistureTotal} moistureMax={moistureMax}/>
 
-                <Text className='self-center font-bold text-lg'>{consumed} / 1500</Text>
+            <View className="my-6 rounded-md p-5 bg-primary">
+                <View className="">
+                    <Text className="mb-1 text-base text-white" style={{ fontFamily: 'Montserrat_600SemiBold' }}>Recente vochtinnames</Text>
+                    <Image className="" style={{ tintColor: color.whiteColor }} source={require('./../../assets/static/figure/figure_blocks_01.png')}/>
+                </View>
 
-                <TextInput onChangeText={setInputValue} className='border-2 h-12 w-24 self-center rounded-2xl'/>
-
-                <Button title={'Submit data'} onPress={increase}/>
-                <Button title={'Reset'} onPress={reset}/>
+                <View className="mt-6 mb-6 rounded-md bg-white">
+                    <FlatList className=""
+                                scrollEnabled={false}
+                                data={moisture}
+                                keyExtractor={item => item.id}
+                                renderItem={({item}) => (
+                                    <ItemData dataProduct={item.dataProduct} dataDrink={item.dataDrink} 
+                                                timeFirst={item.timeFirst} timeLast={item.timeLast}
+                                                moistureFirst={item.moistureFirst} moistureLast={item.moistureLast}
+                                                moistureRemaining={item.moistureFirst - item.moistureLast}/>
+                                )}/>
+                </View>
             </View>
 
-            <View className="my-2 p-4 rounded-md bg-primary">
-                <View className="">
-                    <Text className="text-base font-semibold text-white">Recente vochtinnames</Text>
-                    <View className="mt-2 mb-3">
-                        <Image className="" source={require('./../../assets/static/figure/figure_blocks_01.png')}/>
+            <View className="rounded-md bg-primary">
+                <TouchableOpacity onPress={{}} activeOpacity={opacity.opacity800}>
+                    <View className="flex-row justify-between items-center py-4 pl-3 pr-6">
+                        <Text className="text-sm text-white" style={{ fontFamily: 'Montserrat_600SemiBold' }}>
+                            Waarom moet ik mijn vochtinname beperken?
+                        </Text>
+                        <View className="rounded-full bg-white">
+                            <Image className="w-7 h-7" style={{ tintColor: color.primaryColor }} source={require('./../../assets/static/icons/icon_arrow_down_01.png')}/>
+                        </View>
                     </View>
-                </View>
-
-                <View className="my-4 rounded-md bg-white">
-                    <ItemMeting textDrink="Cola"
-                                timeFirst="17:15"
-                                timeLast="17:37"
-                                moistureFirst="300"
-                                moistureLast="10"/>
-                    <ItemMeting textDrink="Thee"
-                                timeFirst="17:15"
-                                timeLast="17:37"
-                                moistureFirst="175"
-                                moistureLast="0"/>
-                    <ItemMeting textDrink="Koffie"
-                                timeFirst="17:15"
-                                timeLast="17:37"
-                                moistureFirst="125"
-                                moistureLast="0"/>
-                    <ItemMeting textDrink="Water"
-                                timeFirst="17:15"
-                                timeLast="17:37"
-                                moistureFirst="230"
-                                moistureLast="40"/>
-                </View>
-            </View>
-
-            <View className="flex-row justify-between items-center my-2 rounded-md py-4 pl-3 pr-4 bg-gray-400">
-                <View className="">
-                    <Text className="text-base font-semibold text-white">Waarom moet ik mijn vochtinname
-                        beperken?</Text>
-                </View>
-
-                <TouchableOpacity onPress={{}}>
-                    <Image className="w-8 h-8" style={{tintColor: color.whiteColor}}
-                           source={require('./../../assets/static/icons/icon_arrow_down_03.png')}/>
                 </TouchableOpacity>
             </View>
 
-            <View className="my-2 rounded-md bg-gray-300">
-                <View className="items-center rounded-t-md p-2 bg-gray-400">
-                    <Text className="text-base font-semibold text-white">Aanbeveling</Text>
-                </View>
+            <View className="mt-6 mb-24 -mx-4 py-8">
+                <Image className="absolute w-full bg-cover" source={require('./../../assets/static/image/image_background_01.png')}/>
 
-                <View className="p-4">
-                    <View className="flex-row justify-between py-2">
-                        <View className="w-3/5 gap-2">
-                            <Text className="text-sm font-medium">Uw maximaal aanbevolen vochtinname voor morgen
-                                is</Text>
-
-                            <View className="self-start rounded-md py-1 px-2 bg-gray-400">
-                                <Text className="text-sm font-medium text-white">1500 ml</Text>
-                            </View>
-
-                            <Text className="text-sm font-medium">Aan de hand van uw recente innames hebben wij een
-                                aantal aanbevelingen voor u gedaan:</Text>
-                        </View>
-
-                        <View className="w-2/5">
-                            <Image className="w-[128px] h-[128px]"
-                                   source={require('./../../assets/static/icons/icon_maat_beker_01.png')}/>
-                        </View>
+                <View className="mx-4 rounded-md px-3 pb-4 bg-white">
+                    <View className="self-start -ml-3 rounded-tl-md rounded-br-md py-2 px-4 bg-secondary">
+                        <Text className="text-sm text-white" style={{ fontFamily: 'Montserrat_600SemiBold' }}>Aanbevelingen</Text>
                     </View>
 
-                    <View className="flex-wrap flex-row gap-2 my-2">
-                        <View className="rounded-md py-2 w-[30%] bg-gray-400">
-                            <Text className="text-sm text-center font-medium text-white">Water</Text>
+                    <Text className="mt-5 max-w-[75%] text-sm text-primary" style={{ fontFamily: 'Montserrat_700Bold' }}>Uw maximaal aanbevolen vochtinname voor morgen is</Text>
+                    <View className="self-start mt-3 mb-5 rounded-md py-1 px-2 bg-primary">
+                        <Text className="text-sm text-white" style={{ fontFamily: 'Montserrat_500Medium' }}>1500 ml</Text>
+                    </View>
+
+                    <Image className="" style={{ tintColor: color.secondaryColor }} source={require('./../../assets/static/figure/figure_blocks_01.png')}/>
+                    <Text className="mt-6 text-sm text-primary" style={{ fontFamily: 'Montserrat_500Medium' }}>
+                        Dit is de hoeveelheid vocht die u wordt aangeraden te consumeren gedurende de dag.
+                        Aan de hand van uw recente innames hebben wij aan aantal aanbevelingen voor u gedaan:
+                    </Text>
+
+                    <View className="flex-row mt-5">
+                        <View className="pl-3 w-1/2">
+                            <Text className="text-sm text-primary" style={{ fontFamily: 'Montserrat_700Bold' }}>Drank</Text>
+
+                            <FlatList className="mt-3 mb-4"
+                                    scrollEnabled={false}
+                                    data={drinkRecommendation}
+                                    keyExtractor={item => item.name}
+                                    renderItem={({item}) => (
+                                        <View className="flex-row items-center gap-3 max-w-[90%]">
+                                            <View className="rounded-full w-1 h-1 bg-primary"></View>
+                                            <Text className="text-sm text-primary" style={{ fontFamily: 'Montserrat_500Medium' }}>{item.name}</Text>
+                                        </View>
+                                    )}/>
                         </View>
-                        <View className="rounded-md py-2 w-[30%] bg-gray-400">
-                            <Text className="text-sm text-center font-medium text-white">Banaan</Text>
-                        </View>
-                        <View className="rounded-md py-2 w-[30%] bg-gray-400">
-                            <Text className="text-sm text-center font-medium text-white">Boterham</Text>
-                        </View>
-                        <View className="rounded-md py-2 w-[30%] bg-gray-400">
-                            <Text className="text-sm text-center font-medium text-white">Appel</Text>
-                        </View>
-                        <View className="rounded-md py-2 w-[30%] bg-gray-400">
-                            <Text className="text-sm text-center font-medium text-white">Erwtensoep</Text>
-                        </View>
-                        <View className="rounded-md py-2 w-[30%] bg-gray-400">
-                            <Text className="text-sm text-center font-medium text-white">Milkshake</Text>
+
+                        <View className="w-1/2">
+                            <Text className="text-sm text-primary" style={{ fontFamily: 'Montserrat_700Bold' }}>Voeding</Text>
+
+                            <FlatList className="mt-4 mb-4"
+                                    scrollEnabled={false}
+                                    data={foodRecommendation}
+                                    keyExtractor={item => item.name}
+                                    renderItem={({item}) => (
+                                        <View className="flex-row items-center gap-3 max-w-[90%]">
+                                            <View className="rounded-full w-1 h-1 bg-primary"></View>
+                                            <Text className="text-sm text-primary" style={{ fontFamily: 'Montserrat_500Medium' }}>{item.name}</Text>
+                                        </View>
+                                    )}/>
                         </View>
                     </View>
                 </View>
             </View>
-
-            <View className="mb-40"></View>
         </LayoutBasic>
-    );
+    )
 }
