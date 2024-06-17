@@ -1,64 +1,61 @@
+import { useEffect, useState } from 'react';
+import { measuringRef } from '../../config/firebase';
+import { onSnapshot, query } from 'firebase/firestore';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
+import { color, opacity } from '../../assets/styles/Styles';
 // Components
 import { LayoutBasic } from './../../components/layout/_layoutBasic';
 import { ItemTotal } from '../../components/content/item/ItemTotal';
 import { ItemData } from '../../components/content/item/ItemData';
-import { useState } from 'react';
-import { color, opacity } from '../../assets/styles/Styles';
+import { AnimationLoadingWhite } from '../../components/animation/loading/AnimationLoadingWhite';
 
 
 export function Home() {
 
-    // Moisture Data
-    const moisture = [
-        {
-            id: 1,
-            dataProduct: "Cola",
-            dataDrink: true,
-            timeFirst: "17:12",
-            timeLast: "17:20",
-            moistureFirst: 225,
-            moistureLast: 75,
-        },
-        {
-            id: 2,
-            dataProduct: "Boerenkool",
-            dataDrink: false,
-            timeFirst: "13:12",
-            timeLast: "13:58",
-            moistureFirst: 75,
-            moistureLast: null
-        },
-        {
-            id: 3,
-            dataProduct: "Water",
-            dataDrink: true,
-            timeFirst: "13:12",
-            timeLast: "13:58",
-            moistureFirst: 175,
-            moistureLast: null
-        },
-        {
-            id: 4,
-            dataProduct: "Thee",
-            dataDrink: true,
-            timeFirst: "13:12",
-            timeLast: "13:58",
-            moistureFirst: 225,
-            moistureLast: 75
-        }
-    ];
+    const [loadingData, setLoadingData] = useState(false);
+    const [unsubscribe, setUnsubscribe] = useState(null);
+
+    const [measureData, setMeasureData] = useState(null);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoadingData(true);
+
+                const q = query(measuringRef);
+                const unsub = onSnapshot(q, (querySnapshot) => {
+                    const documents = [];
+                    querySnapshot.forEach((doc) => {
+                        documents.push({ ...doc.data(), measureId: doc.id });
+                    });
+                    setMeasureData(documents);
+                    setLoadingData(false);
+                });
+                setUnsubscribe(() => unsub);
+            } catch(error) {
+                console.error("Fetch Error:", error);
+                setLoadingData(false);
+            }
+        };
+
+        fetchData();
+        return () => {
+            if (typeof unsubscribe === 'function') {
+                unsubscribe();
+            }
+        };
+    }, []);
 
     // Moisture Max
     const moistureMax = 1500;
 
     // Moisture Total
-    const moistureTotal = moisture.reduce((total, item) => {
-        if (item.moistureLast != null) {
+    const moistureTotal = measureData ? measureData.reduce((total, item) => {
+        if (item.moistureLast !== null) {
             return total + (item.moistureFirst - item.moistureLast);
         }
         return total;
-    }, 0);
+    }, 0) : 0;
 
     // Recommendations
     const drinkRecommendation = [{ name: "Water" }, { name: "Appelsap" }, { name: "Thee" }, { name: "Koffie" }];
@@ -74,18 +71,25 @@ export function Home() {
                     <Image className="" style={{ tintColor: color.whiteColor }} source={require('./../../assets/static/figure/figure_blocks_01.png')}/>
                 </View>
 
-                <View className="mt-6 mb-6 rounded-md bg-white">
-                    <FlatList className=""
-                                scrollEnabled={false}
-                                data={moisture}
-                                keyExtractor={item => item.id}
-                                renderItem={({item}) => (
-                                    <ItemData dataProduct={item.dataProduct} dataDrink={item.dataDrink} 
-                                                timeFirst={item.timeFirst} timeLast={item.timeLast}
-                                                moistureFirst={item.moistureFirst} moistureLast={item.moistureLast}
-                                                moistureRemaining={item.moistureFirst - item.moistureLast}/>
-                                )}/>
-                </View>
+                {loadingData ? (
+                    <View className="items-center">
+                        <AnimationLoadingWhite />
+                    </View>
+                ) : (
+                    <View className="mt-6 mb-6 rounded-md bg-white">
+                        <FlatList className=""
+                        scrollEnabled={false}
+                        data={measureData}
+                        keyExtractor={item => item.measureId}
+                        renderItem={({item}) => (
+                            <ItemData measureId={item.measureId} consumption={item.consumption} consumptionType={item.consumptionType}
+                                    timeFirst={item.timeFirst} timeLast={item.timeLast}
+                                    moistureFirst={item.moistureFirst} moistureLast={item.moistureLast}
+                                    moistureRemaining={item.moistureFirst - item.moistureLast}/>
+                        )}/>
+                   
+                    </View>
+                )}
             </View>
 
             <View className="rounded-md bg-primary">

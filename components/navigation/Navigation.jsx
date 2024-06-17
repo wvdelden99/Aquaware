@@ -82,8 +82,9 @@ export function Navigation() {
     return (
         <NavigationContainer>
             <Stack.Navigator screenOptions={{ headerShown: false }}>
-                <Stack.Screen name="Introduction" component={Introduction}></Stack.Screen>
+                
                 <Stack.Screen name="Navbar" component={Navbar}></Stack.Screen>
+                <Stack.Screen name="Introduction" component={Introduction}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
     )

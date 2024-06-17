@@ -3,11 +3,14 @@ import { Image, Text, View } from 'react-native';
 import { color } from '../../../assets/styles/Styles';
 
 
-export function ItemDropdown({dropdownData, dropdownText}) {
+export function ItemDropdown({dropdownData, dropdownText, onItemSelect}) {
     return (
         <View className="my-2">
             <SelectDropdown
                 data={dropdownData}
+                onSelect={(selectedItem, index) => {
+                    onItemSelect(selectedItem.value); 
+                }}
                 renderButton={(selectedItem) => {
                     return (
                         <>

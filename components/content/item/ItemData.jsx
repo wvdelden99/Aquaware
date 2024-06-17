@@ -6,7 +6,7 @@ import { color, opacity } from '../../../assets/styles/Styles';
 import { ModalData } from '../modal/ModalData';
 
 
-export function ItemData({dataProduct, dataDrink, timeFirst, timeLast, moistureFirst, moistureLast, moistureRemaining}) {
+export function ItemData({measureId, consumption, consumptionType, timeFirst, timeLast, moistureFirst, moistureLast, moistureRemaining}) {
 
     const [showData, setShowData] = useState(false);
     const [showModalData, setShowModalData] = useState(false);
@@ -31,14 +31,14 @@ export function ItemData({dataProduct, dataDrink, timeFirst, timeLast, moistureF
                     <View className="flex-row justify-between items-center">
                         <View className="flex-row items-center gap-4">
                             <View className="rounded-md p-2 bg-primary">
-                                {dataDrink ? (
+                                {consumptionType ? (
                                     <Image className="w-6 h-6" style={{ tintColor: color.whiteColor }} source={require('./../../../assets/static/icons/icon_drink_01.png')}/>
                                 ) : (
                                     <Image className="w-6 h-6" style={{ tintColor: color.whiteColor }} source={require('./../../../assets/static/icons/icon_food_01.png')}/>
                                 )}
                             
                             </View>
-                            <Text className="text-base text-primary" style={{ fontFamily: 'Montserrat_500Medium' }}>{dataProduct}</Text>
+                            <Text className="text-base text-primary" style={{ fontFamily: 'Montserrat_500Medium' }}>{consumption}</Text>
                         </View>
 
                         <View className="flex-row items-center gap-2">
@@ -101,7 +101,7 @@ export function ItemData({dataProduct, dataDrink, timeFirst, timeLast, moistureF
                 </View> 
             </View>
 
-            <ModalData dataProduct={dataProduct} timeFirst={timeFirst} timeLast={timeLast}
+            <ModalData measureId={measureId} consumption={consumption} timeFirst={timeFirst} timeLast={timeLast}
                         moistureFirst={moistureFirst} moistureLast={moistureLast}
                         showModalData={showModalData} setShowModalData={setShowModalData}/>
         </>
